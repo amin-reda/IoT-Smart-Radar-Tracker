@@ -1,18 +1,26 @@
 # 🚀 IoT Smart Radar Tracker
 
-An IoT-based smart radar system that combines **Arduino hardware** with **Python Computer Vision** to detect, monitor, and track objects in real time.
+An IoT-based **object tracking system** designed for real-time surveillance and automatic target tracking.
 
-The system performs **180° scanning**, measures object distance using an ultrasonic sensor, processes camera input through Computer Vision, and controls a **Pan-Tilt mechanism** to track detected targets.
+The system combines **Arduino hardware** with **Python Computer Vision** to detect and track objects in real time. An **HC-SR04 ultrasonic sensor** performs 180° scanning, while a **Pan-Tilt mechanism** controlled by two servo motors enables two-axis target movement.
 
 ---
 
 ## 🎯 Project Overview
 
-The **IoT Smart Radar Tracker** is a team-based project that combines **IoT, Embedded Systems, Computer Vision, and Python** to create an interactive real-time tracking and surveillance system.
+The **Smart Radar System** is a team-based IoT project that combines:
 
-The system integrates an **Arduino UNO R4 Minima**, **HC-SR04 ultrasonic sensor**, servo motors, camera, buzzer, and Python-based Computer Vision.
+* 📡 Ultrasonic sensing
+* 👁️ Computer Vision
+* 🔄 180° radar scanning
+* 🎯 Pan-Tilt target tracking
+* 💻 Python-based processing
+* 🔌 Arduino-Python serial communication
+* 🔊 Alert system
 
-The goal is to detect objects, estimate their distance, and automatically orient the Pan-Tilt mechanism toward detected targets while providing real-time feedback through the computer interface.
+When an object is detected, the system processes the available sensor and camera information and automatically controls the Pan-Tilt mechanism toward the target.
+
+The system also includes a **laser diode** for visual pointing and a **buzzer** for alerts.
 
 ---
 
@@ -20,92 +28,91 @@ The goal is to detect objects, estimate their distance, and automatically orient
 
 ### Problem
 
-Traditional surveillance and monitoring systems often require continuous human observation and manual control.
+Real-time surveillance and object tracking can require continuous human monitoring and manual control.
 
 ### Solution
 
-This project introduces an automated tracking system that combines:
+This project provides an automated tracking system that combines an ultrasonic radar mechanism with Computer Vision and Arduino-based hardware control.
 
-* 📡 Ultrasonic sensing
-* 👁️ Computer Vision
-* 🔄 180° radar scanning
-* 🎯 Pan-Tilt tracking
-* 💻 Real-time Python processing
-* 🔌 Arduino-Python communication
-* 🔊 Alert mechanisms
+The system can:
 
-Together, these components allow the system to detect and respond to objects in real time.
+* Scan the surrounding area across **180°**.
+* Measure the distance of detected objects.
+* Process camera input using Computer Vision.
+* Automatically control a **two-axis Pan-Tilt mechanism**.
+* Track detected targets.
+* Provide visual and audio alerts.
+* Display the system response in real time.
 
 ---
 
 ## ⚙️ How It Works
 
-The system consists of two main parts:
+The system consists of two main components: **Arduino Hardware** and a **Python Computer Vision Application**.
 
-### 🔌 1. Arduino Hardware
+### 🔌 Arduino Hardware
 
-The Arduino controls the physical components of the system.
+The Arduino UNO R4 Minima is responsible for the hardware control layer.
 
-The **HC-SR04 ultrasonic sensor** performs distance measurements while the servo motors control the Pan-Tilt mechanism.
+It handles:
 
-The Arduino communicates with the Python application through **USB Serial communication**.
+* HC-SR04 ultrasonic distance measurement.
+* 180° scanning.
+* Pan and Tilt servo control.
+* Buzzer activation.
+* Laser activation.
+* Serial communication with the Python application.
 
-### 🧠 2. Python Computer Vision
+### 🧠 Python Computer Vision
 
-The computer receives camera input and processes it using:
+The Python application handles the Computer Vision side of the project.
+
+It uses:
 
 * **MediaPipe**
 * **OpenCV-Contrib-Python**
 * **NumPy**
 
-The Python application performs real-time Computer Vision processing and communicates with the Arduino using **PySerial**.
-
-The Computer Vision results are then used to control the tracking mechanism.
+The Python application processes camera input, performs object detection/tracking, and communicates with the Arduino through **PySerial**.
 
 ---
 
 ## 🔄 System Workflow
 
 ```text
-                     ┌──────────────────┐
-                     │      Camera      │
-                     └────────┬─────────┘
-                              │
-                              ▼
-                     ┌──────────────────┐
-                     │ Computer Vision  │
-                     │ MediaPipe        │
-                     │ OpenCV-Contrib   │
-                     │ NumPy            │
-                     └────────┬─────────┘
-                              │
-                              ▼
-                     ┌──────────────────┐
-                     │ Object Detection │
-                     │   & Tracking     │
-                     └────────┬─────────┘
-                              │
-                              │ PySerial
-                              ▼
-              ┌───────────────────────────────┐
-              │       Arduino UNO R4          │
-              │                               │
-              │  ┌─────────────────────────┐  │
-              │  │ HC-SR04 Ultrasonic      │  │
-              │  │ Distance Measurement    │  │
-              │  └────────────┬────────────┘  │
-              │               │               │
-              │               ▼               │
-              │      ┌─────────────────┐      │
-              │      │ Pan-Tilt Servos │      │
-              │      └─────────────────┘      │
-              └───────────────────────────────┘
-                              │
-                              ▼
-                     ┌──────────────────┐
-                     │ Real-Time System │
-                     │    Response      │
-                     └──────────────────┘
+                         ┌─────────────────┐
+                         │     Camera      │
+                         └────────┬────────┘
+                                  │
+                                  ▼
+                    ┌────────────────────────┐
+                    │ Python Computer Vision │
+                    │                        │
+                    │ MediaPipe              │
+                    │ OpenCV-Contrib-Python  │
+                    │ NumPy                  │
+                    └───────────┬────────────┘
+                                │
+                                │ PySerial
+                                ▼
+                    ┌────────────────────────┐
+                    │     Arduino UNO R4     │
+                    │        Minima          │
+                    └───────────┬────────────┘
+                                │
+               ┌────────────────┼────────────────┐
+               │                │                │
+               ▼                ▼                ▼
+        ┌────────────┐   ┌──────────────┐   ┌─────────┐
+        │  HC-SR04   │   │  Pan-Tilt    │   │ Buzzer  │
+        │  Ultrasonic│   │   Servos     │   │         │
+        │   Sensor   │   │              │   └─────────┘
+        └────────────┘   └──────────────┘
+                                │
+                                ▼
+                         ┌─────────────┐
+                         │ Laser Diode │
+                         └─────────────┘
 ```
 
 ---
@@ -116,9 +123,10 @@ The Computer Vision results are then used to control the tracking mechanism.
 * 👁️ **Real-Time Computer Vision**
 * 🎯 **Object Detection & Tracking**
 * 📏 **Ultrasonic Distance Measurement**
-* 🔧 **Automatic Pan-Tilt Control**
+* 🔧 **Two-Axis Pan-Tilt Movement**
 * 🔊 **Buzzer Alerts**
-* 💻 **Real-Time Visualization**
+* 🔴 **Laser Pointing Mechanism**
+* 💻 **Real-Time Computer Interface**
 * 🔌 **Arduino ↔ Python Serial Communication**
 * ⚡ **Integrated IoT + Computer Vision System**
 
@@ -128,60 +136,105 @@ The Computer Vision results are then used to control the tracking mechanism.
 
 ### 💻 Software
 
-| Technology            | Purpose                                            |
-| --------------------- | -------------------------------------------------- |
-| Python                | Computer Vision application and system integration |
-| MediaPipe             | Computer Vision and tracking                       |
-| OpenCV-Contrib-Python | Image and video processing                         |
-| NumPy                 | Numerical and array processing                     |
-| PySerial              | Arduino-Python serial communication                |
-| Arduino IDE           | Arduino development                                |
+| Technology                | Purpose                                |
+| ------------------------- | -------------------------------------- |
+| **Python**                | Computer Vision and system integration |
+| **MediaPipe**             | Computer Vision and tracking           |
+| **OpenCV-Contrib-Python** | Image and video processing             |
+| **NumPy**                 | Numerical and array processing         |
+| **PySerial**              | Arduino ↔ Python serial communication  |
+| **Arduino IDE**           | Arduino development                    |
+| **C++**                   | Arduino hardware control               |
 
 ### 🔌 Hardware
 
-| Component                 | Purpose                         |
-| ------------------------- | ------------------------------- |
-| Arduino UNO R4 Minima     | Main microcontroller            |
-| HC-SR04                   | Ultrasonic distance measurement |
-| Servo Motors              | Pan-Tilt movement               |
-| Camera                    | Real-time visual input          |
-| Buzzer                    | Detection alerts                |
-| Laser Diode               | Visual pointing mechanism       |
-| Breadboard & Jumper Wires | Hardware connections            |
+| Component                 | Purpose                                            |
+| ------------------------- | -------------------------------------------------- |
+| **Arduino UNO R4 Minima** | Main microcontroller                               |
+| **HC-SR04**               | Ultrasonic distance measurement and radar scanning |
+| **2× Servo Motors**       | Pan-Tilt two-axis movement                         |
+| **Camera**                | Real-time visual input                             |
+| **Laser Diode**           | Visual pointing mechanism                          |
+| **Buzzer**                | Audio alerts                                       |
+| **Breadboard**            | Circuit assembly and power distribution            |
+| **Jumper Wires**          | Hardware connections                               |
+
+---
+
+## 🔌 Circuit Connections
+
+### HC-SR04 Ultrasonic Sensor
+
+| Connection | Arduino |
+| ---------- | ------- |
+| VCC        | 5V      |
+| GND        | GND     |
+| TRIG       | Pin 4   |
+| ECHO       | Pin 5   |
+
+### Laser Module
+
+| Connection | Arduino |
+| ---------- | ------- |
+| Positive   | Pin 7   |
+| Negative   | GND     |
+
+### Pan Servo
+
+| Connection | Arduino |
+| ---------- | ------- |
+| Signal     | Pin 9   |
+| Power      | 5V      |
+| Ground     | GND     |
+
+### Tilt Servo
+
+| Connection | Arduino |
+| ---------- | ------- |
+| Signal     | Pin 10  |
+| Power      | 5V      |
+| Ground     | GND     |
+
+### Buzzer
+
+| Connection | Arduino |
+| ---------- | ------- |
+| Positive   | Pin 6   |
+| Negative   | GND     |
 
 ---
 
 ## 🏗️ System Architecture
 
-The project follows a hybrid **IoT + Computer Vision architecture**:
+The project uses a hybrid **IoT + Embedded Systems + Computer Vision** architecture.
 
 ```text
-              ┌─────────────┐
-              │   Camera    │
-              └──────┬──────┘
-                     │
-                     ▼
-           ┌────────────────────┐
-           │ Python CV Layer     │
-           │                    │
-           │ MediaPipe          │
-           │ OpenCV-Contrib     │
-           │ NumPy              │
-           └─────────┬──────────┘
-                     │
-                     │ PySerial
-                     ▼
-           ┌────────────────────┐
-           │ Arduino Control    │
-           │ Layer              │
-           └─────────┬──────────┘
-                     │
-              ┌──────┴───────┐
-              ▼              ▼
-       ┌────────────┐  ┌──────────────┐
-       │  HC-SR04   │  │  Pan-Tilt    │
-       │  Sensor    │  │  Servos      │
-       └────────────┘  └──────────────┘
+        ┌──────────────────┐
+        │      Camera      │
+        └────────┬─────────┘
+                 │
+                 ▼
+      ┌──────────────────────┐
+      │  Python Application   │
+      │                      │
+      │  MediaPipe           │
+      │  OpenCV-Contrib      │
+      │  NumPy               │
+      │  Tracking            │
+      └──────────┬───────────┘
+                 │
+                 │ PySerial
+                 ▼
+      ┌──────────────────────┐
+      │    Arduino UNO R4    │
+      │       Minima         │
+      └──────────┬───────────┘
+                 │
+       ┌─────────┼─────────┐
+       │         │         │
+       ▼         ▼         ▼
+    HC-SR04   Pan-Tilt   Alerts
+              Servos     Buzzer/Laser
 ```
 
 ---
@@ -191,29 +244,27 @@ The project follows a hybrid **IoT + Computer Vision architecture**:
 ```text
 IoT-Smart-Radar-Tracker/
 │
-├── Arduino_Code/
+├── arduino/
 │   └── tracking_system/
 │       └── tracking_system.ino
 │
-├── Python_App/
+├── python/
 │   ├── main.py
 │   ├── tracker.py
+│   ├── pid_controller.py
 │   ├── serial_comm.py
 │   ├── config.py
 │   ├── hand_landmarker.task
 │   └── requirements.txt
 │
-├── Docs_and_Media/
-│   ├── Smart_Radar_System_Report.pdf
-│   ├── iot_project-Dashboard.pdf
-│   ├── circuit_wiring.jpg
-│   └── radar_demo.gif
-│
+├── Smart_Radar_System_Report.docx
+├── iot project-Dashboard.pptx
+├── التوصيلات.md
 ├── .gitignore
 └── README.md
 ```
 
-> The project structure may vary depending on the final repository organization.
+> Python cache files such as `__pycache__/` and `*.pyc` are excluded from the repository.
 
 ---
 
@@ -227,11 +278,11 @@ Key responsibilities included:
 
 * Developing the Computer Vision component using **MediaPipe** and **OpenCV-Contrib-Python**.
 * Processing camera input in real time.
-* Implementing object detection and tracking functionality.
+* Working on object detection and tracking functionality.
 * Using **NumPy** for numerical and data processing operations.
 * Implementing **Python ↔ Arduino communication** using PySerial.
-* Integrating Computer Vision results with the Pan-Tilt tracking mechanism.
-* Contributing to the real-time behavior and integration of the overall system.
+* Integrating Computer Vision outputs with the Pan-Tilt tracking mechanism.
+* Contributing to the Python-side system integration and real-time tracking behavior.
 
 ---
 
@@ -253,12 +304,13 @@ This project was developed collaboratively by a team of **11 members**.
 * Ahmed Zeidan Mokhtar
 * Maged Qasem Hammad
 
-The project involved collaboration across different areas including:
+The team worked across multiple areas including:
 
-* Embedded Systems
 * IoT
+* Embedded Systems
 * Computer Vision
 * Python
+* Arduino
 * Hardware Integration
 * System Development
 
@@ -270,19 +322,19 @@ Explore the project through the following resources:
 
 ### 🎥 Project Demo Video
 
-A demonstration of the Smart Radar system operating in real time.
+A demonstration of the Smart Radar System operating in real time.
 
 **[▶️ Watch Project Demo](https://drive.google.com/file/d/1vAxZLY_458RVwomwx5LIzLksTTPDwrOj/view?usp=sharing)**
 
 ### 📊 IoT Project Dashboard
 
-Project dashboard and presentation containing an overview of the system and its implementation.
+Project dashboard and presentation covering the system and its implementation.
 
 **[📊 View IoT Project Dashboard](https://docs.google.com/presentation/d/1OB8Cuo7KbTeh2MEcdL5jA7xYNDSrro3n/edit?usp=sharing&ouid=116769900194078493481&rtpof=true&sd=true)**
 
 ### 📄 Smart Radar System Report
 
-Detailed project documentation covering the system concept, implementation, and development.
+Detailed documentation covering the project concept, hardware, circuit connections, and implementation.
 
 **[📄 View Smart Radar System Report](https://docs.google.com/document/d/17Hs8i78201mNCiZVNW5llVckPj1hTbRd/edit?usp=sharing&ouid=116769900194078493481&rtpof=true&sd=true)**
 
@@ -292,14 +344,14 @@ Detailed project documentation covering the system concept, implementation, and 
 
 Possible future improvements include:
 
-* 🤖 More advanced object detection models.
+* 🤖 More advanced Computer Vision models.
 * 🎯 Improved tracking accuracy.
 * 👥 Multiple-object tracking.
 * 📏 Improved distance estimation.
 * 📡 Wireless communication instead of USB Serial.
 * 🌐 Web-based monitoring dashboard.
 * 🎮 Remote system control.
-* 📊 Additional IoT sensors.
+* 📊 Integration with additional IoT sensors.
 * ⚡ Improved system performance and response time.
 
 ---
@@ -312,8 +364,8 @@ Possible future improvements include:
 
 ## ⭐ Summary
 
-The **IoT Smart Radar Tracker** demonstrates how **Computer Vision and IoT hardware** can work together to create an interactive real-time tracking system.
+The **IoT Smart Radar Tracker** demonstrates the integration of **Computer Vision, IoT, and Embedded Systems** in a real-time object tracking application.
 
-By combining **Arduino, ultrasonic sensing, Python, MediaPipe, OpenCV-Contrib-Python, NumPy, and PySerial**, the project connects physical sensing and motion control with intelligent visual processing.
+By combining **Arduino UNO R4 Minima, HC-SR04 ultrasonic sensing, Pan-Tilt servo control, Python, MediaPipe, OpenCV-Contrib-Python, NumPy, and PySerial**, the project connects physical sensing and motion control with intelligent visual processing.
 
-The project represents a practical application of **Computer Vision, IoT, Embedded Systems, and Python integration** in a real-world system.
+This project provided practical experience in building and integrating a complete hardware-software system for real-time object detection and tracking.
